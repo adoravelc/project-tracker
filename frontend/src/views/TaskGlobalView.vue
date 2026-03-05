@@ -113,6 +113,21 @@ const formatDate = (value: string) => {
   })
 }
 
+const getCategoryHighlightClass = (categoryName?: string) => {
+  switch (categoryName) {
+    case 'TODO':
+      return 'bg-red-100 text-red-700'
+    case 'IN PROGRESS':
+      return 'bg-orange-100 text-orange-700'
+    case 'TESTING':
+      return 'bg-amber-100 text-amber-700'
+    case 'DONE':
+      return 'bg-emerald-100 text-emerald-700'
+    default:
+      return 'bg-gray-100 text-gray-700'
+  }
+}
+
 const submitTask = async () => {
   if (
     !form.value.project_id ||
@@ -278,7 +293,14 @@ onMounted(async () => {
             <tr v-for="task in tasks" :key="task.id" class="border-t border-[#eeeeee]">
               <td class="px-4 py-3 font-semibold">{{ task.title }}</td>
               <td class="px-4 py-3">{{ task.project?.name ?? '-' }}</td>
-              <td class="px-4 py-3">{{ task.category?.name ?? '-' }}</td>
+              <td class="px-4 py-3">
+                <span
+                  class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                  :class="getCategoryHighlightClass(task.category?.name)"
+                >
+                  {{ task.category?.name ?? 'PENDING' }}
+                </span>
+              </td>
               <td class="px-4 py-3">{{ formatDate(task.due_date) }}</td>
               <td class="px-4 py-3">
                 <div class="flex flex-wrap gap-x-[3mm] gap-y-[6mm]">
