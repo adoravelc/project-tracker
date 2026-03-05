@@ -12,9 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('project_id')->constrained('projects')->cascadeOnDelete();
+        $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+        $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+        $table->foreignId('deleted_by')->nullable()->constrained('users')->nullOnDelete();
+        $table->string('title');
+        $table->text('description');
+        $table->date('due_date');
+        $table->softDeletes(); // Membuat kolom deleted_at
+        $table->timestamps();
+    });
     }
 
     /**

@@ -12,9 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('projects', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        $table->id();
+        $table->foreignId('created_by')->constrained('users')->cascadeOnDelete();
+        $table->string('name');
+        $table->text('description');
+        $table->enum('status', ['active', 'archived'])->default('active');
+        $table->timestamps();
+    });
     }
 
     /**
